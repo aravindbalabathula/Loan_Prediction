@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
 from typing import Literal
+from fastapi.middleware.cors import CORSMiddleware
 
 # Load model and scaler
 model = joblib.load('loan_prediction_model.pkl')
@@ -16,6 +17,14 @@ app = FastAPI(
         "and demographic details using a trained machine learning model."
     ),
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
 
 # Numerical columns to scale
